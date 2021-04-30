@@ -16,12 +16,14 @@ public class ThreadUtil {
     private static ThreadGroup rootThreadGroup = null;
 
     public static ThreadGroup getRootThreadGroup() {
-        if (rootThreadGroup != null)
+        if (rootThreadGroup != null){
             return rootThreadGroup;
+        }
         ThreadGroup tg = Thread.currentThread().getThreadGroup();
         ThreadGroup ptg;
-        while ((ptg = tg.getParent()) != null)
+        while ((ptg = tg.getParent()) != null){
             tg = ptg;
+        }
 
         rootThreadGroup = tg;
         return tg;
@@ -64,8 +66,9 @@ public class ThreadUtil {
     public static Thread getThread(final long id) {
         final Thread[] threads = getAllThreads();
         for (Thread thread : threads) {
-            if (thread.getId() == id)
+            if (thread.getId() == id){
                 return thread;
+            }
         }
         return null;
 
