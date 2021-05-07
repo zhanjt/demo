@@ -1,14 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<mapper namespace="com.example.demo.shardingJdbc.UserDaoMapper">
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="mapper.UserDaoMapperXml"
-            prefHeight="400.0" prefWidth="600.0">
+    <insert id="addUser">
+        INSERT INTO user (
+        id, city, username, create_time, modify_time
+        )
+        VALUES (
+        #{id,jdbcType=INTEGER},
+        #{city,jdbcType=VARCHAR},
+        #{username,jdbcType=VARCHAR},
+        #{createTime},
+        #{modifyTime}
+        )
+    </insert>
 
-</AnchorPane>
+    <select id="list" resultType="com.example.demo.shardingJdbc.User">
+        SELECT
+        u.id as id,
+        u.city as city,
+        u.username as username,
+        u.create_time as createTime,
+        u.modify_time as modifyTime
+        FROM user u
+    </select>
+
+    <select id="findById" resultType="com.example.demo.shardingJdbc.User">
+        SELECT u.* FROM user u WHERE u.id=#{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="findByName" resultType="com.example.demo.shardingJdbc.User">
+        SELECT u.* FROM user u WHERE u.username=#{username,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

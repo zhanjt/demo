@@ -22,7 +22,7 @@ public class InterruptThreadTest {
         boolean flag = TestRun.getFlag();
         System.out.println("threadId:" + threadId + ", flag: " + flag);
 
-        if(!StringUtils.isEmpty(threadId)){
+        if(!StringUtils.hasLength(threadId)){
             Thread thread = ThreadUtil.getThread(Long.parseLong(threadId));
             System.out.println("线程名称：" + thread.getName());
             //停止一个线程。

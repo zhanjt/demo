@@ -1,5 +1,7 @@
 package com.example.demo.shardingJdbc;
 
+import java.util.List;
+
 /**
  * <功能说明>
  *
@@ -7,5 +9,15 @@ package com.example.demo.shardingJdbc;
  * @version Revision 1.0.0
  * 修改时间 2021/5/6  | 修改内容
  */
-public class UserService {
+public interface UserService {
+
+    List<User> list();
+
+    Long add(User user);
+
+    User findById(Long id);
+
+    User findByName(String name);
+
+    Object page(Integer pageNum, Integer pageSize);
 }

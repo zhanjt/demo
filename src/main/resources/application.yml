@@ -1,0 +1,43 @@
+
+spring:
+  shardingsphere:
+    datasource:
+      # 数据库的别名
+      names: ds
+      ds:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/ds_shardingjdbc_test?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+        password: 123456
+        username: root
+    sharding:
+      # 默认分库策略
+#      default-database-strategy:
+#        inline:
+#          sharding-column: id
+#          algorithm-expression: ds$->{id % 4}
+      # 默认分表策略
+      default-table-strategy:
+        inline:
+          sharding-column: id
+          algorithm-expression: user_$->{id % 4}
+      # 数据节点
+      tables:
+        user:
+          actual-data-nodes: ds.user_$->{0..3}
+
+    props:
+      # 打印SQL
+      sql.show: true
+      check:
+        table:
+          metadata:
+          # 是否在启动时检查分表元数据一致性
+          enabled: true
+    # 因为Druid数据源和默认的数据源冲突，添加此配置
+  main:
+    allow-bean-definition-overriding: true
+server:
+  port: 6666
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
