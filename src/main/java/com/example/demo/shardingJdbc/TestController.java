@@ -50,11 +50,16 @@ public class TestController {
         return userService.findByName(username);
     }
 
-    //分页查询  TODO 分表的情况下如何进行分页查询
+    //分页查询
     @GetMapping("/users/page")
     public Object page(Integer pageNum, Integer pageSize) {
         return userService.page(pageNum, pageSize);
     }
 
+    //pageHelper实现分页查询
+    @GetMapping("/users/pageHelper")
+    public Object pageHelper(Integer pageNum, Integer pageSize) {
+        return userService.pageHelper(pageNum, pageSize);
+    }
 
 }

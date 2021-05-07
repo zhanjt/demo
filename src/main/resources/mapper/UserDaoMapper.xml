@@ -24,6 +24,7 @@
         u.create_time as createTime,
         u.modify_time as modifyTime
         FROM user u
+        order by u.create_time desc, id DESC
     </select>
 
     <select id="findById" resultType="com.example.demo.shardingJdbc.User">
@@ -34,4 +35,17 @@
         SELECT u.* FROM user u WHERE u.username=#{username,jdbcType=VARCHAR}
     </select>
 
+
+    <!--要有order by才能有我们想要的排序-->
+    <select id="listPage" resultType="com.example.demo.shardingJdbc.User">
+        SELECT
+        u.id as id,
+        u.city as city,
+        u.username as username,
+        u.create_time as createTime,
+        u.modify_time as modifyTime
+        FROM user u
+        ORDER BY u.id
+        limit #{start,jdbcType=INTEGER}, #{size,jdbcType=INTEGER}
+    </select>
 </mapper>

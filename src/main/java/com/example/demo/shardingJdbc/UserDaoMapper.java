@@ -1,6 +1,7 @@
 package com.example.demo.shardingJdbc;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface UserDaoMapper {
     User findById(Long id);
 
     User findByName(String username);
+
+    List<User> listPage(@Param("start") Integer start, @Param("size") Integer size);
 }

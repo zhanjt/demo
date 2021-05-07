@@ -19,5 +19,7 @@ public interface UserService {
 
     User findByName(String name);
 
-    Object page(Integer pageNum, Integer pageSize);
+    List<User> page(Integer pageNum, Integer pageSize);
+
+    Object pageHelper(Integer pageNum, Integer pageSize);
 }
