@@ -7,6 +7,9 @@ spring:
       ds:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver
+#        url: jdbc:mysql://localhost:3306/ds_shardingjdbc_test?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+#        password: 123456
+#        username: root
         url: jdbc:mysql://localhost:3306/ds_shardingjdbc_test?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
         password: 123456
         username: root
@@ -37,15 +40,42 @@ spring:
     # 因为Druid数据源和默认的数据源冲突，添加此配置
   main:
     allow-bean-definition-overriding: true
+  jackson:
+      #日期格式化
+      date-format: yyyy-MM-dd HH:mm:ss
+      time-zone: GMT+8
+  #kafka
+  kafka:
+    # kafka服务器地址(可以多个)
+    bootstrap-servers: 127.0.0.1:9092
+    consumer:
+      # 指定一个默认的组名
+      group-id: kafka2
+      # earliest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费
+      # latest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
+      # none:topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常
+      auto-offset-reset: earliest
+      # key/value的反序列化
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      # key/value的序列化
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 批量抓取
+      batch-size: 65536
+      # 缓存容量
+      buffer-memory: 524288
+
 server:
-  port: 6666
+  port: 8081
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 
-#jackson
-spring:
-  jackson:
-    #日期格式化
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
+#swagger-ui配置
+swagger:
+  base-package: com.example.demo.shardingJdbc
+  title: 测试
+  description: 这是一个demo，用来指点代码
+  version: 0.0.1
 

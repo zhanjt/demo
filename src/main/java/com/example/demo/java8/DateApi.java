@@ -1,13 +1,16 @@
 package com.example.demo.java8;
 
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
  * <功能说明>
  * java8的时间api,替掉之前的Date  线程安全
+ *
  * @author zhanjiantong
  * @version Revision 1.0.0
  * 修改时间 2021/5/24  | 修改内容
@@ -15,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class DateApi {
 
     //1.Instant 时间戳
-    public static void instant(){
+    public static void instant() {
         Instant instant = Instant.now();
         //2021-05-24T07:15:54.738Z
         System.out.println(instant);
@@ -40,10 +43,10 @@ public class DateApi {
 
 
     //2.LocalDateTime
-    public static void LocalDateTimeTest(){
+    public static void LocalDateTimeTest() {
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
-        LocalDateTime localDateTime =  LocalDateTime.now();
+        LocalDateTime localDateTime = LocalDateTime.now();
         //localDateTime.format会调用formatter.format方法
         System.out.println(localDateTime.format(formatter));
         System.out.println(formatter.format(localDateTime));
@@ -59,7 +62,7 @@ public class DateApi {
     }
 
     //Localdate 和 LocalTime
-    public static void LocatDateAndTimeTest(){
+    public static void LocatDateAndTimeTest() {
         LocalDate localDate = LocalDate.now();
         localDate = LocalDate.ofYearDay(2005, 86); // 获得2005年的第86天 (27-Mar-2005)
         System.out.println(localDate);
@@ -67,9 +70,12 @@ public class DateApi {
         System.out.println(localDate2);
         System.out.println(ChronoUnit.DAYS.between(localDate, localDate2));
 
-        LocalTime localTime = LocalTime.of(22, 33); //10:33 PM
-        localTime = LocalTime.now();
+        LocalTime localTime = LocalTime.of(1, 0); //10:33 PM
+        LocalTime localTime3 = LocalTime.now();
         System.out.println(localTime);
+        System.out.println(localTime.minusMinutes(1));
+        System.out.println(localTime.minusMinutes(2));
+        System.out.println(localTime3.isAfter(localTime));
         LocalTime localTime2 = LocalTime.ofSecondOfDay(4503); // 返回一天中的第4503秒 (1:15:30 AM)
         System.out.println(localTime2);
         //时间差
@@ -80,14 +86,31 @@ public class DateApi {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 //        instant();
 //        LocalDateTimeTest();
-        LocatDateAndTimeTest();
+//        LocatDateAndTimeTest();
+
+//        LocalDateTime end = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59);
+//        LocalDateTime start = end.minusDays(30).withHour(0).withMinute(0).withSecond(0);
+//        System.out.println(start);
+//        System.out.println(end);
+
+        System.out.println(LocalDate.now(ZoneId.of("Asia/Shanghai")).format(DateTimeFormatter.BASIC_ISO_DATE));
+
+        LocalDate localDate = LocalDate.now();
+        System.out.println(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+        LocalDateTime end = LocalDateTime.now().minusHours(2L);
+        System.out.println(Date.from(end.atZone(ZoneId.systemDefault()).toInstant()));
+
+        String dateStr = "20210608";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date date = simpleDateFormat.parse(dateStr);
+        System.out.println(date);
+
+        System.out.println(LocalDateTime.now().minusMinutes(5).format(DateTimeFormatter.ofPattern("yyyyMMddHHmm")));
     }
-
-
-
 
 
 }
