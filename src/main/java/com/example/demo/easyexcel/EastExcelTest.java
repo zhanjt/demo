@@ -5,6 +5,8 @@ import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.fastjson.JSON;
+import com.example.demo.golbalException.Result;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.sl.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -50,7 +52,9 @@ public class EastExcelTest {
         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
         String fileName = URLEncoder.encode("测试", "UTF-8").replaceAll("\\+", "%20");
         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
-        EasyExcel.write(response.getOutputStream(), DownloadData.class).sheet("模板").doWrite(data());
+//        EasyExcel.write(response.getOutputStream(), DownloadData.class).sheet("模板").doWrite(data());
+        EasyExcel.write(response.getOutputStream(), DownloadData.class).sheet("模板")
+                .registerWriteHandler(new CustomCellWriteHandler()).doWrite(data());
     }
 
     /**
@@ -93,13 +97,20 @@ public class EastExcelTest {
      */
     @PostMapping("upload")
     @ResponseBody
-    public String upload(MultipartFile file) throws IOException {
+    public Result upload(MultipartFile file) throws IOException {
 //        EasyExcel.read(file.getInputStream(), UploadData.class, new UploadDataListener(uploadDAO)).sheet().doRead();
 //        EasyExcel.read(file.getInputStream(), UploadData.class, new JsonObjectListener()).sheet().doRead();
 //
         //从指定行开始读取 headRowNumber(2)
-        EasyExcel.read(file.getInputStream(), UploadData.class, new JsonObjectListener()).sheet().headRowNumber(2).doRead();
-        return "success";
+//        EasyExcel.read(file.getInputStream(), UploadData.class, new JsonObjectListener()).sheet().headRowNumber(2).doRead();
+        String filename = file.getOriginalFilename();
+        if (StringUtils.isBlank(filename) || (!filename.toLowerCase().endsWith(".xls") && !filename.toLowerCase().endsWith(".xlsx"))) {
+            return Result.error("500", "excel格式错误");
+        }
+        ExcelListener excelListener = new ExcelListener();
+        EasyExcel.read(file.getInputStream(), UploadData.class, excelListener).sheet("模板").headRowNumber(1).doRead();
+        List<Object> list =  excelListener.getList();
+        return Result.success(list);
     }
 
 
@@ -107,9 +118,9 @@ public class EastExcelTest {
         List<DownloadData> list = new ArrayList<DownloadData>();
         for (int i = 0; i < 10; i++) {
             DownloadData data = new DownloadData();
-            data.setString("字符串" + 0);
+            data.setString("字符串" + i);
             data.setDate(new Date());
-            data.setDoubleData(0.56);
+            data.setDoubleData(0.56 + i);
             list.add(data);
         }
         return list;

@@ -1,5 +1,7 @@
 package com.example.demo.shardingJdbc;
 
+import com.example.demo.golbalException.validateGroup.DeleteGroup;
+import com.example.demo.golbalException.validateGroup.UpdateGroup;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -21,7 +23,7 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = -1445215485779542085L;
 
-    @NotNull(message = "id不能为空")
+    @NotNull(message = "id不能为空", groups = {UpdateGroup.class, DeleteGroup.class})
     private Long id;
 
 //    @NotNull(message ="城市不能为空")
@@ -30,10 +32,11 @@ public class User implements Serializable {
 
     private String username = "";
 
-    @NotNull(message ="创建时间不能为空")
+    @NotNull(message ="创建时间不能为空", groups = {UpdateGroup.class, DeleteGroup.class})
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date createTime;
 
+    @NotNull(message = "修改时间不能为空")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date modifyTime;
 

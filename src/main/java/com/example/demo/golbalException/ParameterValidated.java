@@ -45,7 +45,7 @@ public class ParameterValidated {
      * @return 验证成功：返回true；验证失败：将错误信息添加到message中
      */
 //    public void validObject(Object bean, Validator validator, Class<?> ...groups) {
-////        Set<ConstraintViolation<Object>> constraintViolationSet = validator.validate(bean, groups);
+//        Set<ConstraintViolation<Object>> constraintViolationSet = validator.validate(bean, groups);
 //        if (!constraintViolationSet.isEmpty()) {
 //            StringBuilder sb = new StringBuilder();
 //            for (ConstraintViolation violation: constraintViolationSet) {

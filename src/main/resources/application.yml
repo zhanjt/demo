@@ -47,7 +47,7 @@ spring:
   #kafka
   kafka:
     # kafka服务器地址(可以多个)
-    bootstrap-servers: 127.0.0.1:9092
+    bootstrap-servers: 10.24.37.93:9092,10.24.37.34:9092,10.24.37.39:9092
     consumer:
       # 指定一个默认的组名
       group-id: kafka2

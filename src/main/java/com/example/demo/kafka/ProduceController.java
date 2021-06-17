@@ -3,6 +3,7 @@ package com.example.demo.kafka;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,11 +33,14 @@ public class ProduceController {
     private SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
     @GetMapping("/produce")
-    public String produce(){
+    public String produce(String str){
         JSONObject data = JSONObject.parseObject(msg);
         data.put("REQUEST_TIME", format.format(new Date()));
 //        data.put("ERR_CODE","I110202");
         data.put("ERR_CODE","I110203");
+        if(!StringUtils.isEmpty(str)){
+            data.put("CUSTOMER_NO", str);
+        }
 //        data.put("spikeToken","token");
         for(int i = 0; i< 2; i++){
             if(i == 0){
