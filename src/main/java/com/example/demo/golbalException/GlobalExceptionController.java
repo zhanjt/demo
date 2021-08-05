@@ -3,6 +3,7 @@ package com.example.demo.golbalException;
 import com.example.demo.golbalException.validateGroup.DeleteGroup;
 import com.example.demo.golbalException.validateGroup.UpdateGroup;
 import com.example.demo.shardingJdbc.User;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -22,7 +23,7 @@ public class GlobalExceptionController {
     @Autowired
     private GlobalService globalService;
 
-    @GetMapping("/errTest")
+    @DeleteMapping("/errTest")
     public Result errTest(@RequestParam @Validated Integer i, @RequestParam @Validated Integer k){
         int j = 1 / i;
         return Result.success();

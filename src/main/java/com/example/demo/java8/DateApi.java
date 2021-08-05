@@ -1,10 +1,14 @@
 package com.example.demo.java8;
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -82,34 +86,85 @@ public class DateApi {
         long hoursBetween = ChronoUnit.HOURS.between(localTime, localTime2);
         System.out.println(hoursBetween);
 
+    }
+
+//    public static void getDaysBefor(LocalDate localDate, int days){
+    public static void getDaysBefor(){
+        LocalDate localDate= LocalDate.now();
+        int monthdays = localDate.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();
+        int dayOfMonth = localDate.getDayOfMonth();
+        int days = 0;
+        if(dayOfMonth == monthdays){
+            //今天是这个月的最后一天
+            days = monthdays;
+        }else {
+            //今天不是这个月的最后一天
+            days = Integer.valueOf(ChronoUnit.DAYS.between(localDate.minusMonths(1), localDate) + "");
+        }
+
+        List<String> list = new ArrayList<>();
+        for(int i = days-1; i >= 0; i--){
+            String format = localDate.minusDays(i).format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+            list.add(format);
+        }
+//        System.out.println(localDate.minusMonths(1).plusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+        System.out.println(list);
+        System.out.println(list.size());
+    }
+
+    public static void str2LocalDateTime(String timeStr, DateTimeFormatter formatter){
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime parse = LocalDateTime.parse(timeStr, formatter);
+        long between = ChronoUnit.MINUTES.between(parse,currentTime);
+        System.out.println(between);
 
     }
 
+    static DateTimeFormatter yyyyMMddHHmm =
+            DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 
     public static void main(String[] args) throws Exception {
 //        instant();
 //        LocalDateTimeTest();
 //        LocatDateAndTimeTest();
 
+//        getDaysBefor(LocalDate.now(), 30);
+//        getDaysBefor();
+
+        str2LocalDateTime("202107301110", yyyyMMddHHmm);
+
+
 //        LocalDateTime end = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59);
 //        LocalDateTime start = end.minusDays(30).withHour(0).withMinute(0).withSecond(0);
 //        System.out.println(start);
 //        System.out.println(end);
 
-        System.out.println(LocalDate.now(ZoneId.of("Asia/Shanghai")).format(DateTimeFormatter.BASIC_ISO_DATE));
+//        System.out.println(LocalDate.now(ZoneId.of("Asia/Shanghai")).format(DateTimeFormatter.BASIC_ISO_DATE));
+//
+//        LocalDate localDate = LocalDate.now();
+//        System.out.println(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+//
+//
+//
+//
+//        LocalDateTime end = LocalDateTime.now().minusHours(2L);
+//        System.out.println(Date.from(end.atZone(ZoneId.systemDefault()).toInstant()));
+//
+//        String dateStr = "20210608";
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+//        Date date = simpleDateFormat.parse(dateStr);
+//        System.out.println(date);
+//
+//        System.out.println(LocalDateTime.now().minusMinutes(5).format(DateTimeFormatter.ofPattern("yyyyMMddHHmm")));
 
-        LocalDate localDate = LocalDate.now();
-        System.out.println(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
-        LocalDateTime end = LocalDateTime.now().minusHours(2L);
-        System.out.println(Date.from(end.atZone(ZoneId.systemDefault()).toInstant()));
 
-        String dateStr = "20210608";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        Date date = simpleDateFormat.parse(dateStr);
-        System.out.println(date);
+//        LocalDateTime end = LocalDateTime.now().minusMinutes(10).withSecond(0).withNano(0);
+//        LocalDateTime start = end.minusMinutes(10);
+//        System.out.println(end);
+//        System.out.println(start);
 
-        System.out.println(LocalDateTime.now().minusMinutes(5).format(DateTimeFormatter.ofPattern("yyyyMMddHHmm")));
+
     }
 
 
