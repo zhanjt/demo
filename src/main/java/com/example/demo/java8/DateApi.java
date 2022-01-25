@@ -1,5 +1,8 @@
 package com.example.demo.java8;
 
+import com.example.demo.utils.JsonUtil;
+import com.fasterxml.jackson.databind.JsonNode;
+
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.time.*;
@@ -9,6 +12,7 @@ import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -123,6 +127,16 @@ public class DateApi {
     static DateTimeFormatter yyyyMMddHHmm =
             DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 
+    public static List<String> getMinusDays(LocalDateTime localDateTime, int days, String fm, Integer inteval) {
+        List<String> list = new CopyOnWriteArrayList<>();
+        for (int i = days - 1; i >= 0; ) {
+            String format = localDateTime.minusDays(i).format(DateTimeFormatter.ofPattern(fm));
+            list.add(format);
+            i -= inteval;
+        }
+        return list;
+    }
+
     public static void main(String[] args) throws Exception {
 //        instant();
 //        LocalDateTimeTest();
@@ -165,7 +179,22 @@ public class DateApi {
 //        System.out.println(start);
 
 
+        List<String> minusDays = getMinusDays(LocalDateTime.now().minusDays(1), 15, "yyyy-MM-dd", 2);
+        System.out.println(JsonUtil.object2JsonStr(minusDays));
+
+        System.out.println(JsonUtil.object2JsonStr(getSearchTimeList()));
     }
 
 
+    public static List<String> getSearchTimeList() {
+        List<String> list = new ArrayList<>(10);
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(JsonUtil.object2JsonStr(now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))));
+        //考虑到多个地方都要用这个方法，往前特点的秒区间暂时写死（目前的需求是往前5-10秒）
+        for (int i = 5; i < 10; i++ ){
+            list.add(now.minusSeconds(i).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+        }
+
+        return list;
+    }
 }

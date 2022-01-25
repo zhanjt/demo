@@ -16,8 +16,8 @@ import java.util.List;
 public class StringTest {
 
     public static void main(String[] args) {
-        List<String> list = null;
-        System.out.println(String.join(",", list));
+//        List<String> list = null;
+//        System.out.println(String.join(",", list));
 
 
 
@@ -34,5 +34,20 @@ public class StringTest {
 
         //        List<String> list = Arrays.asList("test001","test002","test003","test004","test005");
 //        System.out.println(list.subList(0,0));
+
+        String str = "ERROR_111__192.168.10.1:6080_A020001";
+        String filedKey = str.substring(0, str.lastIndexOf('_'));
+        System.out.println(filedKey);
+        String filedKey2 = str.substring(str.lastIndexOf('_')+1);
+        System.out.println(filedKey2);
+        String[] keys = str.split("_");
+        System.out.println(keys.length);
+        for (String key: keys){
+            System.out.println(key);
+
+        }
+
+        String str2 = "codis-maintenance:300-hash-auth2RA1d3969308518479284ac766f159c0ffb";
+        System.out.println(str2.substring(str2.lastIndexOf("codis-maintenance:") + "codis-maintenance".length() + 1));
     }
 }

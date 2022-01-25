@@ -40,7 +40,23 @@ public class User implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date modifyTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
-    private LocalDateTime testDate;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
+//    private LocalDateTime testDate;
 
+    public User(){}
+
+    public User(Long id, String city, String username) {
+        this.id = id;
+        this.city = city;
+        this.username = username;
+    }
+
+    public User( Long id,  String city, String username,  Date createTime,  Date modifyTime) {
+        this.id = id;
+        this.city = city;
+        this.username = username;
+        this.createTime = createTime;
+        this.modifyTime = modifyTime;
+//        this.testDate = testDate;
+    }
 }
